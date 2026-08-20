@@ -551,8 +551,7 @@ textarea:focus{outline:2px solid var(--fission);outline-offset:1px;border-color:
   font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--lc);
 }
 
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-@media(max-width:1200px){.cards{grid-template-columns:repeat(2,1fr)}}
+.cards{display:block}
 .evcard{
   background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--lc);
   border-radius:var(--r);padding:15px 17px;box-shadow:var(--sh-1);display:grid;gap:9px;align-content:start;
@@ -642,7 +641,8 @@ textarea:focus{outline:2px solid var(--fission);outline-offset:1px;border-color:
 
 @media print{
   @page{margin:16mm}
-  .topbar,.rail,.case-strip,.statusbar,.stage-nav,.zone-decide,.doc-head,.doc-actions{display:none!important}
+  .topbar,.rail,.case-strip,.statusbar,.stage-nav,.zone-decide,.doc-head,.doc-actions,
+  .revise,.starters,.skip-link{display:none!important}
   body{background:#fff;padding:0}
   .zone{padding:0}
   .zone-inner{padding:0}
@@ -959,6 +959,7 @@ h2.ask{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;align-items:start;
   background:var(--surface-2);
 }
+.std-rubric{grid-column:1/-1}
 .std-block h3{
   font-family:var(--mono);font-size:.62rem;letter-spacing:.13em;text-transform:uppercase;
   color:var(--muted-2);font-weight:600;margin:0 0 9px;
@@ -969,8 +970,12 @@ h2.ask{
   margin:0 0 3px;font-family:var(--mono);font-size:.72rem;font-weight:600;color:#0a4a48;
 }
 .std-text{margin:0;font-size:.83rem;line-height:1.5;color:var(--ink-2)}
-.std-objectives{margin:0;padding-left:1.05rem;display:grid;gap:6px}
-.std-objectives li{font-size:.83rem;line-height:1.45;color:var(--ink-2)}
+.std-objective{
+  margin:0 0 9px;font-size:.88rem;line-height:1.55;color:var(--ink);font-weight:500;
+  background:var(--fission-soft);border:1px solid var(--fission-line);
+  border-radius:var(--r-sm);padding:11px 13px;
+}
+.std-objective-sub{color:var(--muted)}
 @media(max-width:700px){
   .standards summary{flex-wrap:wrap;gap:8px}
   .std-codes{order:3;width:100%}
@@ -1005,6 +1010,245 @@ h2.ask{
   .rail-step.here{outline:2px solid Highlight}
   .scene,.pin{forced-color-adjust:auto}
 }
+
+
+/* ------------------------------------------------------------ rubric */
+.rub-table{
+  display:grid;gap:1px;background:var(--line);border:1px solid var(--line);
+  border-radius:var(--r-sm);overflow:hidden;margin-top:10px;
+}
+.rub-head,.rub-row{display:grid;grid-template-columns:1.15fr 1fr 1fr 1fr 1fr;gap:1px;background:var(--line)}
+.rub-head span{
+  background:var(--surface-3);padding:8px 10px;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-2);font-weight:600;
+}
+.rub-row span{background:var(--surface);padding:9px 10px;font-size:.78rem;line-height:1.4;color:var(--ink-2)}
+.rub-dim{font-family:var(--display);font-weight:600;color:var(--ink)!important;background:var(--surface-2)!important}
+.std-note{margin-top:9px;font-style:italic;color:var(--muted)}
+@media(max-width:900px){
+  .rub-head{display:none}
+  .rub-row{grid-template-columns:1fr}
+  .rub-row span:nth-child(2)::before{content:"4 · Strong: ";font-weight:600}
+  .rub-row span:nth-child(3)::before{content:"3 · Solid: ";font-weight:600}
+  .rub-row span:nth-child(4)::before{content:"2 · Developing: ";font-weight:600}
+  .rub-row span:nth-child(5)::before{content:"1 · Not yet: ";font-weight:600}
+}
+
+/* rubric as printed on the brief */
+.doc-rub{width:100%;border-collapse:collapse;margin-top:6px;font-size:.8rem}
+.doc-rub th,.doc-rub td{border:1px solid var(--line-2);padding:6px 8px;text-align:left}
+.doc-rub th:not(:first-child),.doc-rub td:not(:first-child){width:34px;text-align:center}
+.doc-rub thead th{background:var(--surface-2);font-family:var(--mono);font-size:.68rem}
+.doc-rub-note{margin:8px 0 4px;font-size:.78rem;color:var(--muted)}
+.doc-comment{border:1px solid var(--line-2);border-radius:4px;height:64px}
+@media print{
+  .doc-rubric{break-inside:avoid;page-break-inside:avoid}
+}
+
+
+/* --------------------------------------------------------- starters */
+.starters{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px}
+.starters-label{
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--muted);margin-right:2px;
+}
+.starter{
+  background:var(--surface-2);border:1px dashed var(--line-2);border-radius:999px;
+  padding:.28rem .7rem;font-size:.76rem;color:var(--muted);font-family:var(--body);
+}
+.starter:hover{border-style:solid;border-color:var(--fission);color:#0a4a48;background:var(--surface)}
+.zone-decide .starter{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.24);color:#c6dedd}
+.zone-decide .starter:hover{border-color:#7fe3da;color:#fff}
+.zone-decide .starters-label{color:#a8c4c4}
+
+/* ------------------------------------------------- own statement box */
+.own-box{
+  background:var(--surface-2);border:1px solid var(--line);border-left:3px solid var(--fission);
+  border-radius:var(--r);padding:15px 16px;display:grid;gap:11px;margin:6px 0 4px;width:100%;
+}
+.own-ask{margin:0;font-size:.87rem;line-height:1.5;color:var(--ink-2)}
+.own-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.own-field{display:grid;gap:5px}
+.own-field > span{
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);
+}
+.own-field select,.own-field textarea{
+  font-family:var(--body);font-size:.87rem;color:var(--ink);
+  border:1px solid var(--line-2);border-radius:var(--r-sm);padding:9px 11px;background:var(--surface);
+  min-height:44px;width:100%;
+}
+.own-field textarea{min-height:74px;line-height:1.5;resize:vertical}
+.own-note{margin:0;font-size:.78rem;color:var(--muted)}
+
+/* ---------------------------------------------------------- revision */
+.revise{
+  background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);
+  border-radius:var(--r);padding:18px 20px;margin-bottom:20px;box-shadow:var(--sh-1);
+}
+.revise header{display:grid;grid-template-columns:auto minmax(0,1fr);gap:13px;margin-bottom:13px}
+.rev-n{
+  width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
+  font-family:var(--mono);font-size:.78rem;font-weight:600;
+  background:var(--gold-soft);border:1px solid var(--gold-line);color:#6d5210;
+}
+.revise h2{font-size:1.1rem;font-weight:600;margin:0}
+.revise header p{margin:4px 0 0;font-size:.85rem;color:var(--muted);max-width:74ch}
+.rev-body{display:grid;gap:12px;max-width:760px}
+.rev-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.rev-note{font-size:.8rem;color:var(--muted)}
+@media(max-width:700px){.own-row{grid-template-columns:1fr}}
+
+
+/* --------------------------------------------------------- self check */
+.arg-side{position:sticky;top:130px;display:grid;gap:16px}
+.arg-preview{position:static}
+.self-check{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  box-shadow:var(--sh-1);padding:14px 16px;
+}
+.sc-title{
+  margin:0 0 10px;font-family:var(--mono);font-size:.63rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);
+}
+.sc-list{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.sc-list li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px;align-items:start}
+.sc-dot{
+  width:13px;height:13px;border-radius:50%;margin-top:3px;
+  border:2px solid var(--line-2);background:var(--surface);
+}
+.sc-list li.on .sc-dot{background:var(--good);border-color:var(--good)}
+.sc-list b{display:block;font-family:var(--display);font-size:.82rem;font-weight:600;color:var(--ink)}
+.sc-list em{display:block;font-style:normal;font-size:.77rem;line-height:1.4;color:var(--muted);margin-top:1px}
+.sc-note{margin:11px 0 0;padding-top:9px;border-top:1px solid var(--line);font-size:.73rem;color:var(--muted)}
+.rubric-inline{margin:18px 0 0;max-width:none}
+@media(max-width:1100px){.arg-side{position:static}}
+
+
+/* --------------------------------------------------------- pacing */
+.pace-line{
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:18px 0 0;
+  background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);
+  border-radius:var(--r);padding:13px 16px;font-size:.88rem;color:var(--ink-2);box-shadow:var(--sh-1);
+}
+.pace-line .ts-label{margin:0;flex:none;color:#6d5210}
+.saved-chip{
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.05em;color:var(--muted);
+  background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:.3rem .75rem;
+  transition:background .3s ease,border-color .3s ease,color .3s ease;
+}
+.saved-chip::before{
+  content:"";width:7px;height:7px;border-radius:50%;background:var(--good);flex:none;
+}
+.saved-chip.just-saved{background:var(--good-soft);border-color:var(--good-line);color:var(--good)}
+.saved-chip.stop-here{border-style:dashed}
+
+
+/* ------------------------------------------------------ process flow */
+.flow{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.flow-step{
+  background:var(--surface-2);border:1px solid var(--line);border-left:3px solid var(--pc);
+  border-radius:var(--r-sm);padding:9px 11px;display:grid;gap:2px;
+}
+.flow-step.tone-hot{background:var(--warn-soft);border-color:var(--warn-line);border-left-color:var(--warn)}
+.flow-step.tone-warm{background:var(--gold-soft);border-color:var(--gold-line);border-left-color:var(--gold)}
+.flow-label{font-family:var(--mono);font-size:.82rem;font-weight:600;color:var(--ink)}
+.flow-sub{font-size:.76rem;line-height:1.35;color:var(--muted)}
+.flow-arrow{
+  justify-self:center;color:var(--line-2);font-size:1rem;line-height:1;
+  padding:3px 0;
+}
+.viz-flag{
+  margin:0;font-size:.78rem;line-height:1.45;color:#6d5210;
+  background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:var(--r-sm);padding:9px 11px;
+}
+
+/* --------------------------------------------------------- readiness */
+.status-viz{display:grid;gap:9px}
+.status-now{
+  margin:0;font-family:var(--display);font-size:.95rem;font-weight:600;color:var(--pc);
+}
+.rungs{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.rung{display:grid;gap:4px}
+.rung-bar{height:6px;border-radius:99px;background:var(--surface-3);border:1px solid var(--line-2)}
+.rung.on .rung-bar{background:var(--pc);border-color:var(--pc)}
+.rung-label{
+  font-family:var(--mono);font-size:.55rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);line-height:1.25;
+}
+.rung.here .rung-label{color:var(--ink);font-weight:600}
+.status-offgrid{
+  margin:0;font-family:var(--mono);font-size:.6rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--warn);background:var(--warn-soft);border:1px solid var(--warn-line);
+  border-radius:5px;padding:3px 8px;justify-self:start;
+}
+.status-note{margin:0;font-size:.8rem;line-height:1.45;color:var(--ink-2)}
+.status-cedar{
+  margin:0;font-size:.79rem;line-height:1.4;color:var(--ink-2);
+  background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:8px 10px;
+}
+.status-cedar span{
+  display:block;font-family:var(--mono);font-size:.56rem;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:2px;
+}
+
+
+/* ------------------------------------------------- one record at a time */
+.rec-shell{display:grid;gap:14px;max-width:840px}
+.rec-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.rec-dots{display:flex;gap:6px}
+.rec-dot{
+  width:26px;height:8px;border-radius:99px;border:1px solid var(--line-2);
+  background:var(--surface);padding:0;cursor:pointer;
+}
+.rec-dot.done{background:var(--lc,var(--fission));border-color:var(--lc,var(--fission));opacity:.45}
+.rec-dot.here{background:var(--lc,var(--fission));border-color:var(--lc,var(--fission));opacity:1;width:34px}
+.rec-desk{margin-left:auto;min-height:36px;padding:.4rem .8rem;font-size:.8rem}
+.rec-card{border-top-width:3px}
+.rec-nav{display:flex;justify-content:space-between;gap:12px;align-items:center}
+
+/* ------------------------------------------------------- evidence desk */
+.desk{display:grid;gap:10px;max-width:1000px}
+.desk-head{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:2px}
+.desk-intro{margin:3px 0 0;font-size:.85rem;color:var(--muted);max-width:60ch}
+.desk-count{
+  margin-left:auto;font-family:var(--mono);font-size:.7rem;color:var(--muted);
+  background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:.3rem .75rem;
+}
+.desk-row{
+  display:grid;grid-template-columns:minmax(0,1.5fr) minmax(230px,1fr) auto;gap:16px;align-items:center;
+  background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--lc);
+  border-radius:var(--r);padding:13px 15px;box-shadow:var(--sh-1);
+}
+.desk-row.kept{background:var(--good-soft);border-color:var(--good-line);border-left-color:var(--good)}
+.desk-main h4{margin:2px 0 4px;font-family:var(--display);font-size:.95rem;font-weight:600}
+.desk-key{margin:0;display:flex;gap:8px;align-items:baseline;font-size:.79rem;color:var(--muted)}
+.desk-key b{font-family:var(--mono);color:var(--ink);font-weight:600}
+.desk-label{
+  display:block;font-family:var(--mono);font-size:.56rem;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:5px;
+}
+.stance-sm{padding:.26rem .6rem;font-size:.72rem}
+.desk-keep{display:grid;gap:6px;justify-items:stretch;min-width:132px}
+.carry-sm{padding:.4rem .7rem;font-size:.78rem}
+.desk-open{
+  background:none;border:0;font-size:.75rem;color:var(--muted);text-decoration:underline;
+  padding:.2rem;justify-self:center;
+}
+.desk-open:hover{color:var(--ink)}
+@media(max-width:900px){
+  .desk-row{grid-template-columns:1fr;gap:10px}
+  .desk-keep{min-width:0}
+  .rec-desk{margin-left:0}
+}
+
+
+.rec-gate{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end;
+  font-size:.83rem;color:var(--warn);font-weight:500;
+}
+@media(max-width:700px){.rec-gate{justify-content:flex-start}}
 
 /* ------------------------------------------------------ animation */
 .lbl{font-family:var(--mono);font-weight:600;letter-spacing:.04em}
@@ -1169,7 +1413,7 @@ h2.ask{
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
             <polyline points="9 6 15 12 9 18"/></svg>
         </span>
-        <span class="std-title" role="heading" aria-level="2">Standards and objectives</span>
+        <span class="std-title" role="heading" aria-level="2">Standards, objectives, and how you are scored</span>
         <span class="std-codes">HS+C.P1U3.8 · HS.P1U3.4</span>
       </summary>
 
@@ -1190,15 +1434,33 @@ h2.ask{
         </section>
 
         <section class="std-block">
-          <h3>What you will be able to do</h3>
-          <ul class="std-objectives">
-            <li>Compare fission, fusion, and radioactive decay by what changes, how much energy is released,
-              what is left behind, how long it lasts, and how each is used today.</li>
-            <li>Identify one benefit and one liability of each process, and tell evidence apart from opinion.</li>
-            <li>Use evidence from more than one file to support a recommendation about a real public decision.</li>
-            <li>Name a cost your recommendation accepts, state the strongest case against it, and say what
-              would change your mind.</li>
-          </ul>
+          <h3>Objective</h3>
+          <p class="std-objective">Develop and justify an evidence-based recommendation for what should happen
+            to Cedar Bend Generating Station by applying nuclear chemistry and weighing scientific evidence,
+            benefits, liabilities, and broader implications.</p>
+          <p class="std-text std-objective-sub">Along the way you will compare fission, fusion, and radioactive
+            decay; identify a benefit and a liability of each; separate evidence from opinion; and name the cost
+            you accept, the strongest case against you, and what would change your mind.</p>
+        </section>
+
+
+        <section class="std-block std-rubric">
+          <h3>How your brief is scored</h3>
+          <p class="std-text">Five things, four levels each. You can see this before you write, and it is printed
+            on your brief.</p>
+          <div id="rubricStage1"></div>
+          <p class="std-text std-note">Which pathway you recommend is not scored. Two students can reach opposite
+            recommendations and both earn a 4.</p>
+        </section>
+
+        <section class="std-block">
+          <h3>Timing</h3>
+          <p class="std-text">Roughly 70 minutes of work: 5 to set a starting position, 20 on the nuclear
+            science file, 15 on one evidence lens, 20 building the argument, and 10 with the commission.
+            Most classes will need two periods.</p>
+          <p class="std-text">Stop wherever the period ends. Work saves on the device automatically and the
+            same browser picks up where it left off. The cleanest break is after the science file, since the
+            evidence lens and the argument belong together.</p>
         </section>
 
         <section class="std-block">
@@ -1221,6 +1483,7 @@ h2.ask{
       the one that goes to the commission.</p>
   </div></div>
   <div class="stage-nav">
+    <span class="saved-chip" id="savedChip">Saved on this device</span>
     <span class="nav-warn" id="posWarn" role="status" aria-live="polite">Choose a pathway and write one sentence to continue.</span>
     <span class="spacer"></span>
     <button class="btn" id="toScience">Continue to the science file</button>
@@ -1245,6 +1508,11 @@ h2.ask{
         <p class="hook-q">Which is which?</p>
       </aside>
     </div>
+    <p class="pace-line">
+      <span class="ts-label">Pacing</span>
+      About 70 minutes in total, so plan on two class periods. There is a natural stopping point after the
+      nuclear science file. Nothing is timed, and slower is fine.
+    </p>
     <p class="task-line">
       <span class="ts-label">Your task</span>
       Establish one benefit and one liability for fission, fusion, and radioactive decay, using evidence rather than
@@ -1332,6 +1600,7 @@ h2.ask{
         <div class="choice-row" id="sciStance"></div>
         <label class="field-label" for="sciNote">Because</label>
         <textarea id="sciNote" placeholder="Name the specific evidence: a half-life, an energy figure, what is left behind."></textarea>
+        <div class="starters"><span class="starters-label">Stuck? Start with</span><button class="starter" type="button" data-starter="sciNote" data-stem="The evidence that matters most is">The evidence that matters most is…</button><button class="starter" type="button" data-starter="sciNote" data-stem="This changes my thinking because">This changes my thinking because…</button><button class="starter" type="button" data-starter="sciNote" data-stem="I had not considered that">I had not considered that…</button><button class="starter" type="button" data-starter="sciNote" data-stem="This does not settle it because">This does not settle it because…</button></div>
         <span class="counter" id="sciCounter">0 words</span>
       </div>
       <aside class="carry" id="sciCarry"></aside>
@@ -1341,6 +1610,7 @@ h2.ask{
 
   <div class="stage-nav">
     <button class="btn ghost" data-go="position">Back</button>
+    <span class="saved-chip stop-here">Good place to stop. Work is saved on this device.</span>
     <span class="nav-warn" id="sciWarn" role="status" aria-live="polite"></span>
     <span class="spacer"></span>
     <button class="btn" id="toLens">Continue to your evidence lens</button>
@@ -1391,6 +1661,24 @@ h2.ask{
     <h1>Build your argument</h1>
     <p class="lede">An argument is not a summary. It states what should happen, shows the evidence behind it,
       admits what it costs, answers the strongest objection, and says what would change it.</p>
+
+    <details class="standards rubric-inline">
+      <summary>
+        <span class="std-chev" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="9 6 15 12 9 18"/></svg>
+        </span>
+        <span class="std-title" role="heading" aria-level="2">How this brief is scored</span>
+        <span class="std-codes">5 things, 4 levels</span>
+      </summary>
+      <div class="std-body">
+        <section class="std-block std-rubric">
+          <div id="rubricArg"></div>
+          <p class="std-text std-note">Which pathway you recommend is not scored. Two students can reach
+            opposite recommendations and both earn a 4.</p>
+        </section>
+      </div>
+    </details>
   </div></div>
 
   <div class="zone zone-sort">
@@ -1402,6 +1690,7 @@ h2.ask{
             <p>Two or three sentences. It can differ from where you started.</p></div></header>
           <div class="choice-row" id="finalPathways"></div>
           <textarea id="argClaim" aria-label="Your recommendation, in two or three sentences" placeholder="The commission should…"></textarea>
+        <div class="starters"><span class="starters-label">Stuck? Start with</span><button class="starter" type="button" data-starter="argClaim" data-stem="The commission should">The commission should…</button><button class="starter" type="button" data-starter="argClaim" data-stem="This pathway is the best available because">This pathway is the best available because…</button><button class="starter" type="button" data-starter="argClaim" data-stem="Before anything else, the commission needs to">Before anything else, the commission needs to…</button></div>
           <span class="counter" id="argClaimCount">0 words</span>
         </section>
 
@@ -1415,21 +1704,27 @@ h2.ask{
           <header><span class="arg-n">3</span><div><h3>The cost you accept</h3>
             <p>Every defensible pathway has one. Name the liability your recommendation carries anyway.</p></div></header>
           <textarea id="argCost" aria-label="The cost your recommendation accepts" placeholder="This pathway means accepting that…"></textarea>
+        <div class="starters"><span class="starters-label">Stuck? Start with</span><button class="starter" type="button" data-starter="argCost" data-stem="This pathway means accepting that">This pathway means accepting that…</button><button class="starter" type="button" data-starter="argCost" data-stem="The people who carry this cost are">The people who carry this cost are…</button><button class="starter" type="button" data-starter="argCost" data-stem="I am willing to accept this because">I am willing to accept this because…</button></div>
         </section>
 
         <section class="arg-block">
           <header><span class="arg-n">4</span><div><h3>The strongest case against you</h3>
             <p>State it fairly enough that someone who holds it would agree you understood them.</p></div></header>
           <textarea id="argCounter" aria-label="The strongest case against your recommendation" placeholder="Someone who disagrees would say…"></textarea>
+        <div class="starters"><span class="starters-label">Stuck? Start with</span><button class="starter" type="button" data-starter="argCounter" data-stem="Someone who disagrees would say">Someone who disagrees would say…</button><button class="starter" type="button" data-starter="argCounter" data-stem="The strongest point against me is">The strongest point against me is…</button><button class="starter" type="button" data-starter="argCounter" data-stem="They would be right that">They would be right that…</button></div>
         </section>
 
         <section class="arg-block">
           <header><span class="arg-n">5</span><div><h3>What would change your mind</h3>
             <p>Name the evidence or condition that would make you withdraw this recommendation.</p></div></header>
           <textarea id="argTrigger" aria-label="What would change your mind" placeholder="I would revisit this if…"></textarea>
+        <div class="starters"><span class="starters-label">Stuck? Start with</span><button class="starter" type="button" data-starter="argTrigger" data-stem="I would revisit this if">I would revisit this if…</button><button class="starter" type="button" data-starter="argTrigger" data-stem="The number to watch is">The number to watch is…</button><button class="starter" type="button" data-starter="argTrigger" data-stem="If this turned out to be false, I would change my mind:">If this turned out to be false, I would change my mind:…</button></div>
         </section>
       </div>
-      <aside class="arg-preview" id="argPreview"></aside>
+      <aside class="arg-side">
+        <div class="arg-preview" id="argPreview"></div>
+        <div class="self-check" id="selfCheck"></div>
+      </aside>
       </div>
     </div>
   </div>
@@ -1458,6 +1753,39 @@ h2.ask{
   </div>
 
   <div class="zone zone-intro"><div class="zone-inner">
+    <section class="revise">
+      <header>
+        <span class="rev-n">6</span>
+        <div>
+          <h2>Revise one thing</h2>
+          <p>The commissioners have responded. Change one part of your brief, then say what you changed
+            and why. Analysts who revise on evidence are more use than analysts who never do.</p>
+        </div>
+      </header>
+      <div class="rev-body">
+        <label class="own-field">
+          <span>What are you changing?</span>
+          <select id="revPart">
+            <option value="">Choose one</option>
+            <option value="claim">My recommendation</option>
+            <option value="evidence">The evidence I used</option>
+            <option value="cost">The cost I accept</option>
+            <option value="counter">The case against me</option>
+            <option value="trigger">What would change my mind</option>
+            <option value="nothing">Nothing, and here is why</option>
+          </select>
+        </label>
+        <label class="own-field">
+          <span>What did you change, and why?</span>
+          <textarea id="revText" placeholder="Commissioner ___ pointed out ___, so I ___."></textarea>
+        </label>
+        <div class="rev-actions">
+          <button class="btn ghost" data-go="argument">Go back and edit my brief</button>
+          <span class="rev-note" id="revNote"></span>
+        </div>
+      </div>
+    </section>
+
     <div class="doc-head">
       <div>
         <h2>Your brief</h2>
@@ -1596,11 +1924,11 @@ h2.ask{
   const LENSES = [
     {id:"change", n:"Question 1", q:"What changes?",
       cells:{
-        fission:{lead:"A neutron hits a heavy nucleus and the nucleus breaks into two smaller nuclei. The neutrons it releases can hit other nuclei, so the process can sustain itself.",
+        fission:{lead:"One heavy nucleus breaks into two smaller ones when a neutron hits it. Released neutrons can hit further nuclei, which is what makes a chain reaction possible.",
           facts:[["Trigger","A neutron must strike the nucleus"],["Can it sustain itself?","Yes, released neutrons cause more fissions"],["Can we stop it?","Yes, by absorbing the neutrons"]]},
-        fusion:{lead:"Two light nuclei push into each other hard enough to combine into one heavier nucleus. Their positive charges repel, so this only happens at enormous temperature and pressure.",
+        fusion:{lead:"Two light nuclei join into one heavier nucleus. Their positive charges repel, which is why this needs extreme heat and pressure.",
           facts:[["Trigger","Extreme heat and pressure"],["Can it sustain itself?","Only while those conditions hold"],["Can we stop it?","Yes, the conditions collapse on their own"]]},
-        decay:{lead:"A single unstable nucleus emits a particle or ray on its own and becomes a different nuclide. Nothing sets it off, and nothing can switch it off.",
+        decay:{lead:"One unstable nucleus emits a particle by itself. Nothing starts it and nothing stops it.",
           facts:[["Trigger","None, it happens on its own"],["Can it sustain itself?","It continues until the nucleus is stable"],["Can we stop it?","No"]]}
       },
       band:{type:"note", title:"The difference that matters most",
@@ -1608,11 +1936,11 @@ h2.ask{
 
     {id:"energy", n:"Question 2", q:"How much energy?",
       cells:{
-        fission:{lead:"One fission event releases roughly 200 MeV, about 50 million times more than burning one molecule of methane.",
+        fission:{lead:"One event releases about 50 million times the energy of burning a single methane molecule.",
           facts:[["Per event","~200 MeV"],["Per kilogram of fuel","~8.2 × 10¹³ J"],["Controlled by us?","Yes, while the reactor runs"]]},
-        fusion:{lead:"One deuterium-tritium fusion releases about 17.6 MeV. Less per event than fission, but the nuclei are far lighter, so each kilogram of fuel yields more.",
+        fusion:{lead:"Less per event than fission, but the nuclei are far lighter, so each kilogram of fuel yields more.",
           facts:[["Per event","~17.6 MeV"],["Per kilogram of fuel","~3.4 × 10¹⁴ J"],["Controlled by us?","Only in a laboratory"]]},
-        decay:{lead:"One decay releases a few MeV at most, far less than a fission. But decay never stops, so the heat keeps accumulating in stored material.",
+        decay:{lead:"Small per event, but it never switches off, so heat keeps accumulating in stored material.",
           facts:[["Per event","~1.2 MeV (Cs-137 beta)"],["Per kilogram of fuel","~2 × 10¹² J (Pu-238)"],["Controlled by us?","No, the half-life sets the rate"]]}
       },
       band:{type:"bars", title:"Energy released per kilogram of fuel",
@@ -1620,44 +1948,66 @@ h2.ask{
           {label:"Fusion (D-T)", value:3.4e14, display:"3.4 × 10¹⁴ J", color:"var(--fusion)"},
           {label:"Fission (U-235)", value:8.2e13, display:"8.2 × 10¹³ J", color:"var(--fission)"},
           {label:"Decay (Pu-238)", value:2.2e12, display:"~2 × 10¹² J, released slowly", color:"var(--decay)"},
-          {label:"Burning methane", value:5.5e7, display:"5.5 × 10⁷ J", color:"var(--muted-2)"}
+          {label:"Burning methane", value:5.5e7, display:"5.5 × 10⁷ J", color:"var(--muted)"}
         ],
         note:"Bars use a <b>logarithmic</b> scale. A linear one would make the methane bar invisible. All three nuclear processes release energy on a scale that chemical burning cannot approach."}},
 
     {id:"leftover", n:"Question 3", q:"What is left behind?",
       cells:{
-        fission:{lead:"The two fragments are usually themselves radioactive. Spent fuel holds a mixture of fission products plus heavier elements formed inside the reactor.",
-          facts:[["Main product","Fission products: Cs-137, Sr-90, I-131"],["Also formed","Plutonium and other heavy elements"],["Handling","Shielding and cooling required"]]},
-        fusion:{lead:"The fuel product is helium, which is stable and harmless. The neutrons it releases do make the reactor structure radioactive over time.",
-          facts:[["Main product","Helium, which is stable"],["Also formed","Radioactive reactor parts"],["Handling","No long-lived high-level waste from the fuel"]]},
-        decay:{lead:"The nucleus becomes a different nuclide, called the daughter. If the daughter is also unstable, it decays again, a chain that continues until something stable is reached.",
-          facts:[["Main product","A daughter nuclide: Cs-137 becomes Ba-137"],["Also formed","Alpha, beta, or gamma radiation"],["Handling","Continuous heat and radiation output"]]}
+        fission:{lead:"The fragments are themselves radioactive.",
+          flow:[
+            {label:"²³⁵U + n", sub:"heavy nucleus"},
+            {label:"⁹²Kr + ¹⁴¹Ba + 3n", sub:"fission fragments"},
+            {label:"Spent fuel", sub:"Cs-137, Sr-90, plus plutonium", tone:"hot"}
+          ],
+          facts:[["Handling","Shielding and cooling required"]]},
+        fusion:{lead:"The fuel product is harmless. The neutrons are what create waste.",
+          flow:[
+            {label:"²H + ³H", sub:"light nuclei"},
+            {label:"⁴He + n", sub:"helium is stable"},
+            {label:"Activated reactor parts", sub:"neutrons make the structure radioactive", tone:"warm"}
+          ],
+          flag:"\"Fusion produces no waste\" is inaccurate. It avoids long-lived waste <b>from its fuel</b>; the structure around it still becomes radioactive.",
+          facts:[["Handling","No long-lived high-level waste from the fuel"]]},
+        decay:{lead:"The daughter nuclide may be unstable too.",
+          flow:[
+            {label:"¹³⁷Cs", sub:"unstable nucleus"},
+            {label:"¹³⁷Ba + β⁻", sub:"daughter plus radiation"},
+            {label:"Decay chain", sub:"continues until a stable nuclide", tone:"hot"}
+          ],
+          facts:[["Handling","Continuous heat and radiation output"]]}
       },
       band:{type:"note", title:"Reading this evidence carefully",
-        html:"\"Produces no waste\" is not true of any of the three. Fusion avoids <b>long-lived waste from its fuel</b>, but its neutrons still activate the structure around it. Precision here is what separates an argument from a slogan."}},
+        html:"None of the three leaves nothing behind. The question is <b>what</b> is left, <b>how long</b> it stays dangerous, and <b>who</b> has to manage it."}},
 
-    {id:"howlong", n:"Question 4", q:"How long does it last?", calc:true,
+    {id:"howlong", n:"Question 4", q:"How long does it last?",
       cells:{
-        fission:{lead:"Some fission products fade within weeks. Others, and the heavy elements formed alongside them, stay hazardous far longer than any institution has existed.",
+        fission:{lead:"Some products fade within weeks. Others outlast any institution that could look after them.",
           facts:[["Shortest example","I-131: 8 days"],["Longest example","Pu-239: 24,100 years"],["Can we speed it up?","No"]]},
-        fusion:{lead:"The reactor structure itself becomes radioactive, but it fades far faster than fission waste. Roughly a century, not thousands of years.",
+        fusion:{lead:"Nothing long-lived comes from the fuel itself.",
           facts:[["Shortest example","Nothing from the fuel: helium is stable"],["Longest example","Reactor parts: about 100 years"],["Can we speed it up?","No"]]},
-        decay:{lead:"Half-life is a fixed property of each nuclide. It cannot be sped up, slowed down, or switched off by anything we do to the material.",
+        decay:{lead:"Half-life is a fixed property of each nuclide. Nothing we do to the material changes it.",
           facts:[["Shortest example","I-131: 8 days"],["Longest example","U-238: 4.5 billion years"],["Can we speed it up?","No, it is fixed for each nuclide"]]}
       },
       band:{type:"timeline", title:"Half-lives against human timescales"}},
 
     {id:"today", n:"Question 5", q:"Can we use it today?",
       cells:{
-        fission:{lead:"Fission is the only one of the three putting electricity on the grid. About 440 reactors run worldwide. Arizona's Palo Verde station, west of Phoenix, is the largest in the United States and powers roughly four million people.",
-          facts:[["Status","In commercial use"],["Real example","Palo Verde, Arizona: 3 reactors, about 3,900 MW"],["Relevance to Cedar Bend","This is what the plant does now"]]},
-        fusion:{lead:"Fusion works in laboratories only. In December 2022 the National Ignition Facility in California got more energy out of the fuel than the lasers put into it, for a fraction of a second. ITER, a reactor being built in France, is not expected to run experiments until the 2030s.",
-          facts:[["Status","Experimental"],["Real example","National Ignition Facility, 2022: net energy gain for an instant"],["Relevance to Cedar Bend","Cannot replace this plant in time"]]},
-        decay:{lead:"Decay does not power the grid, but it is everywhere else. Technetium-99m images tens of millions of hearts and bones a year. Americium-241 sits in household smoke detectors. Plutonium-238 has powered the Perseverance rover on Mars since 2021. The same process makes spent fuel keep giving off heat.",
-          facts:[["Status","In continuous use, and unavoidable"],["Real examples","Medical scans, smoke detectors, Mars rovers, carbon dating"],["Relevance to Cedar Bend","Sets how spent fuel is handled for decades"]]}
+        fission:{lead:"The only one of the three putting electricity on the grid.",
+          status:{level:3, label:"In commercial use",
+            note:"Palo Verde, west of Phoenix, is the largest US station: 3 reactors, about 3,900 MW.",
+            cedar:"This is what Cedar Bend does now."}},
+        fusion:{lead:"Works in laboratories. No fusion plant supplies any grid.",
+          status:{level:1, label:"Experimental",
+            note:"The National Ignition Facility got more energy out of the fuel than the lasers put in for a fraction of a second in 2022. ITER is not expected to run until the 2030s.",
+            cedar:"Cannot replace this plant inside the licensing window."}},
+        decay:{lead:"Used continuously, but never to generate grid electricity.",
+          status:{level:3, label:"In continuous use, other purposes", offGrid:true,
+            note:"Technetium-99m scans, americium-241 smoke detectors, plutonium-238 powering the Perseverance rover.",
+            cedar:"Sets how spent fuel is handled for decades, whichever pathway is chosen."}}
       },
       band:{type:"note", title:"What this means for the commission",
-        html:"A recommendation that depends on fusion replacing Cedar Bend is <b>not implementable on this timeline</b>. A recommendation that ignores decay is <b>incomplete</b>. The spent fuel stays on site whichever pathway the commission chooses."}}
+        html:"Only <b>fission</b> is a grid option today. Fusion is <b>not implementable</b> on this timeline, and decay is <b>not a generating pathway at all</b>. A recommendation that ignores decay is still incomplete, because the spent fuel stays on site whichever pathway the commission chooses."}}
   ];
 
   const TIMELINE = [
@@ -1744,6 +2094,34 @@ h2.ask{
   }
 
   /* ------------------------------------------------------ triptych */
+
+  /* Process chains and readiness, drawn rather than described. */
+  function flowHTML(steps){
+    return '<ol class="flow" aria-label="What the process leaves behind">' +
+      steps.map((st, i) =>
+        '<li class="flow-step' + (st.tone ? " tone-" + st.tone : "") + '">' +
+          '<span class="flow-label">' + st.label + '</span>' +
+          '<span class="flow-sub">' + st.sub + '</span>' +
+        '</li>' + (i < steps.length - 1 ? '<li class="flow-arrow" aria-hidden="true">↓</li>' : "")
+      ).join("") + '</ol>';
+  }
+
+  function statusHTML(st){
+    const steps = ["Experimental", "Demonstrated", "In routine use"];
+    const meter = steps.map((label, i) => {
+      const on = (i + 1) <= st.level;
+      return '<li class="rung' + (on ? " on" : "") + ((i + 1) === st.level ? " here" : "") + '">' +
+        '<span class="rung-bar"></span><span class="rung-label">' + label + '</span></li>';
+    }).join("");
+    return '<div class="status-viz">' +
+      '<p class="status-now">' + st.label + '</p>' +
+      '<ol class="rungs" aria-label="Readiness: ' + st.label + '">' + meter + '</ol>' +
+      (st.offGrid ? '<p class="status-offgrid">Not a grid-generation option</p>' : "") +
+      '<p class="status-note">' + st.note + '</p>' +
+      '<p class="status-cedar"><span>At Cedar Bend</span>' + st.cedar + '</p>' +
+      '</div>';
+  }
+
   function renderTriptych(){
     const L = lens(state.lens);
     $("triptych").innerHTML = PROCESSES.map(p => {
@@ -1761,8 +2139,11 @@ h2.ask{
         <div class="eqn">${p.eqn}</div>
         <div class="cell">
           <p class="cell-lead">${c.lead}</p>
-          <dl class="facts">${c.facts.map(f =>
-            `<div class="fact"><dt>${f[0]}</dt><dd>${f[1]}</dd></div>`).join("")}</dl>
+          ${c.flow ? flowHTML(c.flow) : ""}
+          ${c.flag ? `<p class="viz-flag">${c.flag}</p>` : ""}
+          ${c.status ? statusHTML(c.status) : ""}
+          ${c.facts ? `<dl class="facts">${c.facts.map(f =>
+            `<div class="fact"><dt>${f[0]}</dt><dd>${f[1]}</dd></div>`).join("")}</dl>` : ""}
         </div>
       </article>`;
     }).join("");
@@ -2073,11 +2454,11 @@ h2.ask{
   ];
 
   const STAGES = [
-    {id:"position", n:"1", t:"Your starting position", time:"3 min"},
-    {id:"science",  n:"2", t:"Nuclear science", time:"15 min"},
-    {id:"lens",     n:"3", t:"Your evidence lens", time:"12 min"},
-    {id:"argument", n:"4", t:"Your argument", time:"15 min"},
-    {id:"brief",    n:"5", t:"The commission", time:"5 min"}
+    {id:"position", n:"1", t:"Your starting position", time:"5 min"},
+    {id:"science",  n:"2", t:"Nuclear science", time:"20 min"},
+    {id:"lens",     n:"3", t:"Your evidence lens", time:"15 min"},
+    {id:"argument", n:"4", t:"Your argument", time:"20 min"},
+    {id:"brief",    n:"5", t:"The commission", time:"10 min"}
   ];
 
   /* ---------------------------------------------------------- state ---- */
@@ -2085,6 +2466,10 @@ h2.ask{
   state.calc = null;
   state.qi = 0;
   state.answers = {};
+  state.own = {process:null, kind:null, text:""};
+  state.lensIdx = 0;
+  state.lensView = "records";
+  state.revision = {part:null, text:""};
   state.pathway = null;
   state.claimSeed = "";
   state.sciStance = null;
@@ -2097,15 +2482,26 @@ h2.ask{
   state.klass = "";
   state.submitted = false;
 
+  let saveFlashTimer = null;
+  function flashSaved(){
+    const chips = document.querySelectorAll(".saved-chip:not(.stop-here)");
+    if(!chips.length) return;
+    chips.forEach(c => c.classList.add("just-saved"));
+    clearTimeout(saveFlashTimer);
+    saveFlashTimer = setTimeout(() => chips.forEach(c => c.classList.remove("just-saved")), 1200);
+  }
+
   const baseSave = save, baseLoad = load;
   save = function(){
     baseSave();
+    flashSaved();
     try{
       localStorage.setItem(STORE + "_asm", JSON.stringify({
         stage:state.stage, pathway:state.pathway, claimSeed:state.claimSeed, calc:state.calc,
-        qi:state.qi, answers:state.answers,
+        qi:state.qi, answers:state.answers, own:state.own, revision:state.revision,
         sciStance:state.sciStance, sciNote:state.sciNote, lensId:state.lensId,
-        lensStance:state.lensStance, lensCarry:state.lensCarry, arg:state.arg,
+        lensStance:state.lensStance, lensCarry:state.lensCarry, lensIdx:state.lensIdx,
+        lensView:state.lensView, arg:state.arg,
         name:state.name, klass:state.klass, submitted:state.submitted
       }));
     }catch(e){}
@@ -2138,7 +2534,11 @@ h2.ask{
       if(!state.sciStance) out.push({msg:"Say what this file does to your position.", el:"sciStance"});
     }
     if(stageId === "lens"){
+      const L = lensDef();
       if(!state.lensId) out.push({msg:"Choose one evidence lens.", el:"lensPick"});
+      else if(!allReviewed(L))
+        out.push({msg:"Review and classify all four records before continuing. Record " +
+                      (firstUnreviewed(L) + 1) + " still needs a judgement.", el:"lensCards"});
       else if(!state.lensCarry.length)
         out.push({msg:"Carry at least one record to your argument.", el:"lensCards"});
     }
@@ -2167,12 +2567,31 @@ h2.ask{
 
   function warnHTML(stageId){
     const miss = needs(stageId), soft = unwritten(stageId);
+    /* the evidence lens is the one stage with a hard requirement */
+    if(stageId === "lens" && miss.length) return "<b>Not yet:</b> " + miss.map(m => m.msg).join(" ");
     const bits = miss.map(m => m.msg).concat(soft.map(t => "Nothing written for " + t + " yet."));
     if(!bits.length) return "<b>Complete.</b> Move on whenever you are ready.";
     return "You can move on any time. Still open here: " + bits.join(" ");
   }
 
   function tryAdvance(fromStage, toStage, after){
+    if(fromStage === "lens"){
+      const missing = needs("lens");
+      if(missing.length){
+        const w = $("lensWarn");
+        if(w) w.innerHTML = "<b>Not yet:</b> " + missing.map(m => m.msg).join(" ");
+        const L = lensDef();
+        const first = firstUnreviewed(L);
+        if(L && first >= 0){ state.lensView = "records"; state.lensIdx = first; save(); renderLens(); }
+        const el = $("lensCards");
+        if(el){
+          document.querySelectorAll(".needs-attention").forEach(x => x.classList.remove("needs-attention"));
+          el.classList.add("needs-attention");
+          el.scrollIntoView({behavior:"smooth", block:"center"});
+        }
+        return;
+      }
+    }
     if(fromStage === "position" && !state.pathway){
       const w = $("posWarn");
       if(w) w.innerHTML = "<b>One thing first:</b> choose a pathway. You are meant to start somewhere.";
@@ -2237,7 +2656,8 @@ h2.ask{
     if(id === "position") return !!state.pathway;
     if(id === "science")  return !!(state.sciStance &&
                                     Object.values(state.placed).filter(Boolean).length === 6);
-    if(id === "lens")     return !!(state.lensId && state.lensCarry.length >= 1);
+    if(id === "lens")     return !!(state.lensId && allReviewed(lensDef()) &&
+                                    state.lensCarry.length >= 1);
     if(id === "argument") return argReady();
     if(id === "brief")    return state.submitted;
     return false;
@@ -2246,7 +2666,10 @@ h2.ask{
      evidence is not provisional. Everything after it is open. Students
      route themselves, and empty stages say where their contents come from. */
   function stageOpen(id){
-    return id === "position" || !!state.pathway;
+    if(id === "position") return true;
+    if(!state.pathway) return false;
+    if(id === "argument" || id === "brief") return stageDone("lens");
+    return true;
   }
   function renderRail(){
     $("rail").innerHTML = STAGES.map(st => {
@@ -2326,9 +2749,37 @@ h2.ask{
         <div class="q-done">
           <p class="q-kicker">All ${QUEUE.length} statements sorted</p>
           <h3>You got ${right} of ${QUEUE.length} right first time.</h3>
-          <p>Your grid is complete, and those six statements are now available as evidence
-             when you build your argument.</p>
-          <button class="btn ghost" id="sortAgain" type="button">Sort them again</button>
+          <p>Your grid is complete. Those six statements are available as evidence when you build
+             your argument.</p>
+
+          <div class="own-box">
+            <p class="own-ask"><b>Now one of your own.</b> Name a benefit or a liability the bank did not
+              mention. It can come from anything you saw in the five questions above.</p>
+            <div class="own-row">
+              <label class="own-field">
+                <span>Process</span>
+                <select id="ownProc">
+                  <option value="">Choose one</option>
+                  ${PROCESSES.map(p => `<option value="${p.id}"${state.own.process === p.id ? " selected" : ""}>${p.name}</option>`).join("")}
+                </select>
+              </label>
+              <label class="own-field">
+                <span>Benefit or liability</span>
+                <select id="ownKind">
+                  <option value="">Choose one</option>
+                  <option value="benefit"${state.own.kind === "benefit" ? " selected" : ""}>Benefit</option>
+                  <option value="liability"${state.own.kind === "liability" ? " selected" : ""}>Liability</option>
+                </select>
+              </label>
+            </div>
+            <label class="own-field">
+              <span>In your own words</span>
+              <textarea id="ownText" placeholder="For example: fusion produces no long-lived waste from its fuel, so it would not add to the casks already on site."></textarea>
+            </label>
+            <p class="own-note" id="ownNote"></p>
+          </div>
+
+          <button class="btn ghost" id="sortAgain" type="button">Sort the statements again</button>
         </div>`;
       renderMiniGrid();
       return;
@@ -2448,34 +2899,129 @@ h2.ask{
     if(L){
       $("lensTitle").textContent = L.name;
       $("lensIntro").textContent = L.intro;
-      $("lensMeter2").textContent = Object.keys(state.lensStance).length + " of 4 judged";
-      $("lensCards").innerHTML = L.cards.map(c => `
-        <article class="evcard" style="--lc:${L.color}">
-          <span class="ev-tag">${c.tag}</span>
-          <h4>${c.h}</h4>
-          <p>${c.p}</p>
-          <div class="figs">${c.figs.map(f =>
-            `<span class="fig"><span>${f[0]}</span><b>${f[1]}</b></span>`).join("")}</div>
-          <div class="do-block">
-            <p class="do-label"><span class="do-n">1</span> How does this sit with your position?</p>
-            <div class="stance-row">${STANCES.map(st => `
-              <button class="stance" data-card="${c.id}" data-stance="${st.id}"
-                aria-pressed="${state.lensStance[c.id] === st.id}">${st.label}</button>`).join("")}</div>
-          </div>
-          <div class="do-block">
-            <p class="do-label"><span class="do-n">2</span> Use it in your argument?
-              <span class="do-count">${state.lensCarry.length} of 2 kept</span></p>
-            <button class="carry-btn" data-carry="${c.id}" aria-pressed="${state.lensCarry.includes(c.id)}"
-              ${!state.lensCarry.includes(c.id) && state.lensCarry.length >= 2 ? 'data-full="1"' : ""}>
-              <span class="tick">${state.lensCarry.includes(c.id) ? "✓" : "+"}</span>
-              ${state.lensCarry.includes(c.id) ? "Keeping this one"
-                : (state.lensCarry.length >= 2 ? "Two already kept" : "Keep this one")}</button>
-          </div>
-        </article>`).join("");
+      $("lensMeter2").textContent = state.lensView === "desk"
+        ? state.lensCarry.length + " of 2 carried"
+        : Object.keys(state.lensStance).length + " of 4 judged";
+      /* a classification removed later re-locks the desk */
+      if(state.lensView === "desk" && !allReviewed(L)){
+        state.lensView = "records";
+        const first = firstUnreviewed(L);
+        if(first >= 0) state.lensIdx = first;
+      }
+      $("lensCards").innerHTML = state.lensView === "desk" ? deskHTML(L) : recordHTML(L);
     }
     const ok = stageDone("lens");
     
     $("lensWarn").innerHTML = warnHTML("lens");
+  }
+
+
+  /* ------------------------------------------------------------------
+     Records are reviewed one at a time, then compared on the desk. The
+     decisions are unchanged: how it sits with your position, and whether
+     you carry it. Still a maximum of two carried.
+     ------------------------------------------------------------------ */
+  function allReviewed(L){
+    return !!L && L.cards.every(c => state.lensStance[c.id]);
+  }
+
+  /* Index of the first record with no classification, or -1 if all are done. */
+  function firstUnreviewed(L){
+    if(!L) return -1;
+    return L.cards.findIndex(c => !state.lensStance[c.id]);
+  }
+
+  function figsHTML(c){
+    return '<div class="figs">' + c.figs.map(f =>
+      '<span class="fig"><span>' + f[0] + '</span><b>' + f[1] + '</b></span>').join("") + '</div>';
+  }
+
+  function recordHTML(L){
+    const i = Math.min(state.lensIdx, L.cards.length - 1);
+    const c = L.cards[i];
+    const kept = state.lensCarry.includes(c.id);
+    const full = !kept && state.lensCarry.length >= 2;
+
+    const dots = L.cards.map((x, n) =>
+      '<button class="rec-dot' + (n === i ? " here" : "") + (state.lensStance[x.id] ? " done" : "") +
+      '" data-recgo="' + n + '" aria-label="Record ' + (n + 1) + ' of ' + L.cards.length +
+      (state.lensStance[x.id] ? ", reviewed" : "") + '"></button>').join("");
+
+    return '<div class="rec-shell">' +
+      '<div class="rec-top">' +
+        '<span class="q-kicker">Record ' + (i + 1) + ' of ' + L.cards.length + '</span>' +
+        '<div class="rec-dots">' + dots + '</div>' +
+        (allReviewed(L) ? '<button class="btn ghost rec-desk" data-deskgo="1" type="button">Go to evidence desk</button>' : '') +
+      '</div>' +
+
+      '<article class="evcard rec-card" style="--lc:' + L.color + '">' +
+        '<span class="ev-tag">' + c.tag + '</span>' +
+        '<h4>' + c.h + '</h4>' +
+        '<p>' + c.p + '</p>' +
+        figsHTML(c) +
+        '<div class="do-block">' +
+          '<p class="do-label"><span class="do-n">1</span> How does this sit with your position?</p>' +
+          '<div class="stance-row">' + STANCES.map(st =>
+            '<button class="stance" data-card="' + c.id + '" data-stance="' + st.id + '" aria-pressed="' +
+            (state.lensStance[c.id] === st.id) + '">' + st.label + '</button>').join("") + '</div>' +
+        '</div>' +
+        '<div class="do-block">' +
+          '<p class="do-label"><span class="do-n">2</span> Use it in your argument?' +
+            '<span class="do-count">' + state.lensCarry.length + ' of 2 kept</span></p>' +
+          '<button class="carry-btn" data-carry="' + c.id + '" aria-pressed="' + kept + '"' +
+            (full ? ' data-full="1"' : '') + '><span class="tick">' + (kept ? "✓" : "+") + '</span>' +
+            (kept ? "Keeping this one" : (full ? "Two already kept" : "Keep this one")) + '</button>' +
+        '</div>' +
+      '</article>' +
+
+      '<div class="rec-nav">' +
+        (i > 0 ? '<button class="btn ghost" data-recprev="1" type="button">← Previous record</button>' : '<span></span>') +
+        (i < L.cards.length - 1
+          ? '<button class="btn" data-recnext="1" type="button">Next record →</button>'
+          : (allReviewed(L)
+              ? '<button class="btn" data-deskgo="1" type="button">Go to evidence desk →</button>'
+              : '<span class="rec-gate">Review all four records before comparing them.' +
+                '<button class="btn" data-recgo="' + firstUnreviewed(L) + '" type="button">Review record ' +
+                (firstUnreviewed(L) + 1) + ' →</button></span>')) +
+      '</div>' +
+    '</div>';
+  }
+
+  function deskHTML(L){
+    const rows = L.cards.map((c, n) => {
+      const kept = state.lensCarry.includes(c.id);
+      const full = !kept && state.lensCarry.length >= 2;
+      const key = c.figs[0];
+      return '<article class="desk-row' + (kept ? " kept" : "") + '" style="--lc:' + L.color + '">' +
+        '<div class="desk-main">' +
+          '<span class="ev-tag">' + c.tag + '</span>' +
+          '<h4>' + c.h + '</h4>' +
+          '<p class="desk-key"><span>' + key[0] + '</span><b>' + key[1] + '</b></p>' +
+        '</div>' +
+        '<div class="desk-stance">' +
+          '<span class="desk-label">Your judgement</span>' +
+          '<div class="stance-row">' + STANCES.map(st =>
+            '<button class="stance stance-sm" data-card="' + c.id + '" data-stance="' + st.id +
+            '" aria-pressed="' + (state.lensStance[c.id] === st.id) + '">' + st.label + '</button>').join("") +
+          '</div>' +
+        '</div>' +
+        '<div class="desk-keep">' +
+          '<button class="carry-btn carry-sm" data-carry="' + c.id + '" aria-pressed="' + kept + '"' +
+            (full ? ' data-full="1"' : '') + '><span class="tick">' + (kept ? "✓" : "+") + '</span>' +
+            (kept ? "Carried" : (full ? "Two kept" : "Carry")) + '</button>' +
+          '<button class="desk-open" data-recgo="' + n + '" type="button">Reread</button>' +
+        '</div>' +
+      '</article>';
+    }).join("");
+
+    return '<div class="desk">' +
+      '<div class="desk-head">' +
+        '<div><p class="q-kicker">Your evidence desk</p>' +
+        '<p class="desk-intro">All four records side by side. Change a judgement or swap which two you carry.</p></div>' +
+        '<span class="desk-count">' + state.lensCarry.length + ' of 2 carried</span>' +
+      '</div>' + rows +
+      '<div class="rec-nav"><button class="btn ghost" data-recgo="0" type="button">← Back to the records</button><span></span></div>' +
+    '</div>';
   }
 
   /* -------------------------------------------------------- stage 4 ---- */
@@ -2488,6 +3034,10 @@ h2.ask{
       pool.push({id:"sci:" + id, src:"SCI-01 · " + proc(pid).name + " " + kind,
                  text:st2.text, color:proc(pid).color, science:true});
     });
+    if(state.own.process && state.own.kind && state.own.text.trim()){
+      pool.push({id:"own", src:"Your own observation: " + proc(state.own.process).name + " " + state.own.kind,
+                 text:state.own.text.trim(), color:proc(state.own.process).color, science:true});
+    }
     const L = lensDef();
     if(L) state.lensCarry.forEach(cid => {
       const c = L.cards.find(x => x.id === cid); if(!c) return;
@@ -2526,7 +3076,7 @@ h2.ask{
     const w = words(state.arg.claim);
     $("argClaimCount").textContent = w + (w === 1 ? " word" : " words");
 
-    renderArgPreview();
+    renderArgPreview(); renderSelfCheck(); renderRubrics();
     $("argWarn").innerHTML = warnHTML("argument");
   }
 
@@ -2553,6 +3103,86 @@ h2.ask{
         line("Case against", a.counter) +
         line("Would change my mind", a.trigger) +
       '</div>';
+  }
+
+
+  /* ------------------------------------------------------------------
+     One rubric, rendered into the opening panel, the argument stage, and
+     the printed brief. Students can see it before and during writing.
+     ------------------------------------------------------------------ */
+  const RUBRIC = [
+    {dim:"Nuclear chemistry is accurate",
+     l4:"Fission, fusion, and decay are used correctly and precisely, with figures or timescales.",
+     l3:"Processes are used correctly, with some supporting detail.",
+     l2:"Mostly correct, but one process is confused with another or a figure is misused.",
+     l1:"Processes are mixed up, or no nuclear chemistry appears.",
+     check:"Have I named the right process, with a figure or a timescale?"},
+    {dim:"Evidence supports the claim",
+     l4:"Three or more items from at least two files, each clearly connected to the recommendation.",
+     l3:"Three items, mostly connected to the recommendation.",
+     l2:"Evidence is listed but the link to the claim is unclear.",
+     l1:"Little or no evidence, or evidence that contradicts the claim.",
+     check:"Does each piece of evidence actually support what I recommend?"},
+    {dim:"Tradeoffs are faced",
+     l4:"Names a real cost the recommendation carries and explains who bears it.",
+     l3:"Names a real cost of the recommendation.",
+     l2:"Names a cost, but of a different pathway rather than this one.",
+     l1:"Claims the recommendation has no cost.",
+     check:"Is the cost I named a cost of my pathway, not someone else's?"},
+    {dim:"The counterclaim is fair",
+     l4:"States the strongest opposing case so well that someone holding it would agree.",
+     l3:"States a genuine opposing case accurately.",
+     l2:"States a weak version of the opposing case, or dismisses it.",
+     l1:"No counterclaim, or a strawman.",
+     check:"Would someone who disagrees say I understood them?"},
+    {dim:"The position can be revised",
+     l4:"Names a specific, testable condition that would change the recommendation, and what changed after the hearing.",
+     l3:"Names a specific condition that would change the recommendation.",
+     l2:"Names a vague condition that could not be measured.",
+     l1:"Says nothing would change the position, or leaves it blank.",
+     check:"Could someone actually measure the condition I named?"}
+  ];
+
+  function rubricTable(){
+    return '<div class="rub-table" role="table" aria-label="Scoring rubric">' +
+      '<div class="rub-head" role="row">' +
+        '<span role="columnheader">What is scored</span>' +
+        '<span role="columnheader">4 · Strong</span><span role="columnheader">3 · Solid</span>' +
+        '<span role="columnheader">2 · Developing</span><span role="columnheader">1 · Not yet</span>' +
+      '</div>' +
+      RUBRIC.map(r => '<div class="rub-row" role="row">' +
+        '<span class="rub-dim" role="rowheader">' + r.dim + '</span>' +
+        '<span role="cell">' + r.l4 + '</span><span role="cell">' + r.l3 + '</span>' +
+        '<span role="cell">' + r.l2 + '</span><span role="cell">' + r.l1 + '</span></div>').join("") +
+      '</div>';
+  }
+
+  function renderRubrics(){
+    ["rubricStage1", "rubricArg"].forEach(id => {
+      const host = document.getElementById(id);
+      if(host && !host.dataset.filled){ host.innerHTML = rubricTable(); host.dataset.filled = "1"; }
+    });
+  }
+
+  /* A self-check, not a score. It only reports whether a section has been
+     written, never how good it is. */
+  function renderSelfCheck(){
+    const host = document.getElementById("selfCheck"); if(!host) return;
+    const a = state.arg;
+    const pool = evidencePool().filter(e => a.evidence.includes(e.id));
+    const files = new Set(pool.map(e => e.src.split(" ")[0]));
+    const written = [
+      !!a.claim.trim(),
+      pool.length >= 3 && files.size >= 2,
+      !!a.cost.trim(),
+      !!a.counter.trim(),
+      !!a.trigger.trim()
+    ];
+    host.innerHTML = '<p class="sc-title">Check yourself</p>' +
+      '<ul class="sc-list">' + RUBRIC.map((r, i) =>
+        '<li class="' + (written[i] ? "on" : "") + '"><span class="sc-dot" aria-hidden="true"></span>' +
+        '<span><b>' + r.dim + '</b><em>' + r.check + '</em></span></li>').join("") + '</ul>' +
+      '<p class="sc-note">Filled dots mean you wrote something there. They do not mean it is good yet.</p>';
   }
 
   /* -------------------------------------------------------- stage 5 ---- */
@@ -2582,6 +3212,12 @@ h2.ask{
       {av:"3", name:"Commissioner Ruiz", role:"Technical review", color:"#e8c98a", text:trig}
     ];
   }
+  const REV_LABELS = {
+    claim:"Changed the recommendation", evidence:"Changed the evidence used",
+    cost:"Changed the cost accepted", counter:"Changed the case against",
+    trigger:"Changed what would change my mind", nothing:"Kept the brief as written"
+  };
+
   function renderBrief(){
     const host = $("commissioners"); if(!host) return;
     host.innerHTML = commissioners().map(c => `
@@ -2592,6 +3228,11 @@ h2.ask{
     const a = state.arg, p = pathDef(a.pathway), L = lensDef();
     const pool = evidencePool();
     const chosen = pool.filter(e => a.evidence.includes(e.id));
+    const rp = $("revPart"); if(rp && rp.value !== (state.revision.part || "")) rp.value = state.revision.part || "";
+    const rt = $("revText"); if(rt && rt.value !== state.revision.text) rt.value = state.revision.text;
+    const rn = $("revNote");
+    if(rn) rn.textContent = state.revision.part
+      ? "Saved to your brief below." : "This is the last step. It takes about five minutes.";
     const nm = $("studentName"); if(nm && nm.value !== state.name) nm.value = state.name;
     const kl = $("studentClass"); if(kl && kl.value !== state.klass) kl.value = state.klass;
     const field = (v, label) => v && v.trim() ? esc(v) : `<span class="missing">[${label} not written]</span>`;
@@ -2611,6 +3252,24 @@ h2.ask{
       <section><h4>Cost this recommendation accepts</h4><p>${field(a.cost, "cost")}</p></section>
       <section><h4>The strongest case against it</h4><p>${field(a.counter, "counterclaim")}</p></section>
       <section><h4>What would change this recommendation</h4><p>${field(a.trigger, "review condition")}</p></section>
+      ${state.revision.part ? `<section><h4>Revision after the hearing</h4>
+        <p><b>${REV_LABELS[state.revision.part] || ""}.</b> ${
+          state.revision.text.trim() ? esc(state.revision.text) :
+          '<span class="missing">[no explanation written]</span>'}</p></section>` : ""}
+      <section class="doc-rubric"><h4>Scoring</h4>
+        <table class="doc-rub">
+          <thead><tr><th>What is scored</th><th>4</th><th>3</th><th>2</th><th>1</th></tr></thead>
+          <tbody>
+            <tr><td>Nuclear chemistry is accurate</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>Evidence supports the claim</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>Tradeoffs are faced</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>The counterclaim is fair</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>The position can be revised</td><td></td><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+        <p class="doc-rub-note">The recommended pathway is not scored. Comments:</p>
+        <div class="doc-comment"></div>
+      </section>
       <section><h4>Evidence files used</h4>
         <p>SCI-01 Nuclear science${L ? " · " + L.tag + " " + L.name : ""}</p></section>`;
 
@@ -2646,6 +3305,8 @@ h2.ask{
       "COST ACCEPTED: " + a.cost, "",
       "STRONGEST CASE AGAINST: " + a.counter, "",
       "WOULD CHANGE MY MIND: " + a.trigger, "",
+      "REVISION AFTER THE HEARING: " + (state.revision.part
+        ? (REV_LABELS[state.revision.part] + ". " + state.revision.text) : "(none)"), "",
       "FILES USED: SCI-01" + (L ? ", " + L.tag : "")
     ].join("\n");
   }
@@ -2697,11 +3358,40 @@ h2.ask{
     if(lp){
       if(state.lensId !== lp.dataset.lensPick){
         state.lensId = lp.dataset.lensPick; state.lensStance = {}; state.lensCarry = [];
+        state.lensIdx = 0; state.lensView = "records";
       }
       save(); renderLens(); renderRail(); return;
     }
+    const rprev = e.target.closest("[data-recprev]");
+    if(rprev){ state.lensIdx = Math.max(0, state.lensIdx - 1); save(); renderLens(); return; }
+    const rnext = e.target.closest("[data-recnext]");
+    if(rnext){
+      const L = lensDef();
+      state.lensIdx = Math.min((L ? L.cards.length : 4) - 1, state.lensIdx + 1);
+      save(); renderLens(); return;
+    }
+    const rgo = e.target.closest("[data-recgo]");
+    if(rgo){
+      state.lensIdx = parseInt(rgo.dataset.recgo, 10) || 0;
+      state.lensView = "records"; save(); renderLens(); return;
+    }
+    if(e.target.closest("[data-deskgo]")){
+      const L = lensDef();
+      if(!allReviewed(L)){
+        state.lensView = "records";
+        const first = firstUnreviewed(L);
+        if(first >= 0) state.lensIdx = first;
+      } else {
+        state.lensView = "desk";
+      }
+      save(); renderLens(); return;
+    }
+
     const stn = e.target.closest("[data-stance]");
-    if(stn){ state.lensStance[stn.dataset.card] = stn.dataset.stance; save(); renderLens(); renderRail(); return; }
+    if(stn){
+      state.lensStance[stn.dataset.card] = stn.dataset.stance;
+      save(); renderLens(); renderRail(); return;
+    }
 
     const car = e.target.closest("[data-carry]");
     if(car){
@@ -2724,8 +3414,36 @@ h2.ask{
     }
   });
 
+  document.addEventListener("click", e => {
+    const st = e.target.closest("[data-starter]");
+    if(!st) return;
+    const ta = document.getElementById(st.dataset.starter);
+    if(!ta) return;
+    const stem = st.dataset.stem + " ";
+    ta.value = ta.value.trim() ? ta.value.replace(/\s*$/, " ") + stem : stem;
+    ta.focus();
+    ta.setSelectionRange(ta.value.length, ta.value.length);
+    ta.dispatchEvent(new Event("input", {bubbles:true}));
+  });
+
+  document.addEventListener("change", e => {
+    const id = e.target.id, v = e.target.value;
+    if(id === "ownProc"){ state.own.process = v || null; save(); renderStatus(); }
+    else if(id === "ownKind"){ state.own.kind = v || null; save(); renderStatus(); }
+    else if(id === "revPart"){ state.revision.part = v || null; save(); renderBrief(); }
+  });
+
   document.addEventListener("input", e => {
     const id = e.target.id, v = e.target.value;
+    if(id === "ownText"){
+      state.own.text = v; save();
+      const n = $("ownNote");
+      if(n) n.textContent = (state.own.process && state.own.kind && v.trim())
+        ? "Added to your evidence. You can use it in your argument."
+        : "Fill in all three and it becomes evidence you can use.";
+      return;
+    }
+    if(id === "revText"){ state.revision.text = v; save(); renderBrief(); return; }
     if(id === "claimSeed"){ state.claimSeed = v; save(); renderPosition(); renderRail(); }
     else if(id === "sciNote"){ state.sciNote = v; save(); renderSciStance(); renderRail(); }
     else if(id === "argClaim"){ state.arg.claim = v; save(); renderArgument(); renderRail(); }
@@ -2773,6 +3491,7 @@ h2.ask{
   bindScene();
 
   load();
+  renderRubrics();
   goStage(state.stage || "position");
 })();
 </script>
